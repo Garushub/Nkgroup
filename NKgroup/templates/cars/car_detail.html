@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ car.make }} {{ car.model }} - NKgroup</title>
+</head>
+<body>
+    <h1>{{ car.make }} {{ car.model }} ({{ car.year })</h1>
+    <p>{{ car.description }}</p>
+    <p>Цена за день: {{ car.price_per_day }} руб.</p>
+    <h2>Фотографии</h2>
+    <ul>
+        {% for photo in car.photos.all %}
+        <li>
+            <img src="{{ photo.photo.url }}" alt="{{ car.make }} {{ car.model }}">
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Добавить фотографию</h2>
+    <form method="post" enctype="multipart/form-data" name="photo_form">
+        {% csrf_token %}
+        {{ photo_form.as_p }}
+        <button type="submit">Загрузить</button>
+    </form>
+    <h2>Рассчитать стоимость аренды</h2>
+    <form method="post" name="rental_form">
+        {% csrf_token %}
+        {{ rental_form.as_p }}
+        <button type="submit">Рассчитать</button>
+    </form>
+    {% if rental_price %}
+    <p>Стоимость аренды: {{ rental_price }} руб.</p>
+    {% endif %}
+</body>
+</html>
